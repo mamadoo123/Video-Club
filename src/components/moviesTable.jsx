@@ -1,36 +1,28 @@
 import React, {Component} from 'react';
 import LikeComponent from './common/heart';
+import TableHead from './common/tableHeader';
 
 class MoviesTable extends Component {
 
-    raiseColumnSort = column => {
-        const currentColumn = this.props.currentColumn;
-    if(column === currentColumn.column)
-      {
-        currentColumn.sortType = (currentColumn.sortType === 'asc')? 'desc' : 'asc';
-      }else{
-        currentColumn.sortType = 'asc';
-        currentColumn.column = column;
-      }
-    this.props.onSort(currentColumn);
-    }
-
+   columns = [
+      {key:'title', name:'title', label:'Title'},
+      {key:'genre.name', name:'genre.name', label:'Genre'},
+      {key:'numberInStock', name:'numberInStock', label:'Stoke'},
+      {key:'dailyRentalRate', name:'dailyRentalRate', label:'Rate'},
+      {key:'like'},
+      {key:'delete'}
+    ]
     render() {
-        const {count, pageMovies, onLike, onDelete} = this.props;
+        const {count, pageMovies, currentColumn, onLike, onDelete, onSort} = this.props;
         return(
             <div className="col-9">
             <h4>Showing {count} movies in the page </h4>
             <table className = "table table-hover">
-              <thead>
-                <tr>
-                  <th onClick={() => this.raiseColumnSort('title')}>Title</th>
-                  <th onClick={() => this.raiseColumnSort('genre.name')}>Genre</th>
-                  <th onClick={() => this.raiseColumnSort('numberInStock')}>Stoke</th>
-                  <th onClick={() => this.raiseColumnSort('dailyRentalRate')}>Rate</th>
-                  <th> </th>
-                  <th> </th>
-                </tr>
-              </thead>
+              <TableHead 
+                columns = {this.columns}
+                onSort={onSort}
+                currentColumn={currentColumn}
+              />
               <tbody>
               {pageMovies.map( movie => <tr key = {movie._id}>
                 <td>{movie.title}</td>
